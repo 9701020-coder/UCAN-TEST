@@ -1,0 +1,1186 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>UCAN 職場共通職能測評（54題完整版）</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+  <style>
+    :root {
+      --primary: #4f46e5;
+      --primary-light: #eef2ff;
+      --primary-dark: #3730a3;
+      --accent: #0ea5e9;
+      --success: #10b981;
+      --warning: #f59e0b;
+      --danger: #ef4444;
+      --bg: #f8fafc;
+      --card: #ffffff;
+      --text: #1e293b;
+      --muted: #64748b;
+      --border: #e2e8f0;
+      --radius: 14px;
+      --shadow: 0 4px 20px rgba(15, 23, 42, 0.06);
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans TC", "Microsoft JhengHei", sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      padding-bottom: 60px;
+    }
+
+    .container {
+      max-width: 860px;
+      margin: 0 auto;
+      padding: 0 16px;
+    }
+
+    /* Hero Header */
+    .hero {
+      background: linear-gradient(135deg, #4f46e5 0%, #0ea5e9 100%);
+      color: #fff;
+      padding: 36px 20px 44px;
+      text-align: center;
+      border-radius: 0 0 28px 28px;
+      margin-bottom: 24px;
+      box-shadow: 0 8px 24px rgba(79, 70, 229, 0.2);
+    }
+
+    .hero-badge {
+      display: inline-block;
+      background: rgba(255,255,255,0.2);
+      backdrop-filter: blur(6px);
+      padding: 4px 14px;
+      border-radius: 999px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      margin-bottom: 12px;
+      letter-spacing: 0.5px;
+    }
+
+    .hero h1 {
+      font-size: clamp(1.5rem, 4vw, 2.1rem);
+      font-weight: 800;
+      margin-bottom: 10px;
+    }
+
+    .hero p {
+      font-size: 0.95rem;
+      opacity: 0.92;
+      max-width: 600px;
+      margin: 0 auto;
+    }
+
+    /* Sticky Progress Bar */
+    .sticky-bar {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid var(--border);
+      padding: 12px 0;
+      margin-bottom: 20px;
+      box-shadow: 0 2px 10px rgba(15, 23, 42, 0.04);
+    }
+
+    .progress-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.88rem;
+      font-weight: 600;
+      margin-bottom: 6px;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .progress-track {
+      height: 8px;
+      background: #e2e8f0;
+      border-radius: 999px;
+      overflow: hidden;
+      margin-bottom: 10px;
+    }
+
+    .progress-fill {
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, var(--primary), var(--accent));
+      border-radius: 999px;
+      transition: width 0.3s ease;
+    }
+
+    .nav-pills {
+      display: flex;
+      gap: 6px;
+      overflow-x: auto;
+      padding-bottom: 2px;
+      scrollbar-width: none;
+    }
+    .nav-pills::-webkit-scrollbar { display: none; }
+
+    .nav-pill {
+      flex-shrink: 0;
+      border: 1px solid var(--border);
+      background: #fff;
+      color: var(--muted);
+      padding: 5px 11px;
+      border-radius: 999px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .nav-pill.active {
+      background: var(--primary);
+      color: #fff;
+      border-color: var(--primary);
+    }
+
+    .nav-pill.done {
+      border-color: var(--success);
+      color: #047857;
+      background: #ecfdf5;
+    }
+    .nav-pill.active.done {
+      background: var(--primary);
+      color: #fff;
+      border-color: var(--primary);
+    }
+
+    /* Controls Card */
+    .card {
+      background: var(--card);
+      border-radius: var(--radius);
+      padding: 20px;
+      margin-bottom: 18px;
+      box-shadow: var(--shadow);
+      border: 1px solid var(--border);
+    }
+
+    .toolbar {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .name-input-wrap {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex: 1;
+      min-width: 200px;
+    }
+
+    .name-input-wrap label {
+      font-size: 0.9rem;
+      font-weight: 600;
+      white-space: nowrap;
+    }
+
+    .name-input-wrap input {
+      flex: 1;
+      padding: 8px 12px;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      font-size: 0.92rem;
+      outline: none;
+    }
+    .name-input-wrap input:focus { border-color: var(--primary); }
+
+    .btn-group {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .btn {
+      padding: 8px 14px;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+      background: #fff;
+      color: var(--text);
+      font-size: 0.86rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .btn:hover { background: #f1f5f9; }
+    .btn-primary {
+      background: var(--primary);
+      color: #fff;
+      border-color: var(--primary);
+    }
+    .btn-primary:hover { background: var(--primary-dark); }
+    .btn-success {
+      background: var(--success);
+      color: #fff;
+      border-color: var(--success);
+    }
+    .btn-success:hover { background: #059669; }
+    .btn-danger-outline {
+      color: var(--danger);
+      border-color: #fecaca;
+    }
+    .btn-danger-outline:hover { background: #fef2f2; }
+
+    /* Scale Legend */
+    .scale-legend {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 6px;
+      margin-top: 14px;
+      padding-top: 14px;
+      border-top: 1px dashed var(--border);
+      text-align: center;
+      font-size: 0.78rem;
+      color: var(--muted);
+    }
+
+    .scale-legend span b {
+      display: block;
+      color: var(--primary);
+      font-size: 0.95rem;
+    }
+
+    /* Section Header */
+    .section-card {
+      background: var(--card);
+      border-radius: var(--radius);
+      padding: 22px 20px;
+      margin-bottom: 20px;
+      box-shadow: var(--shadow);
+      border: 1px solid var(--border);
+    }
+
+    .section-title-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 6px;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .section-title {
+      font-size: 1.2rem;
+      font-weight: 800;
+      color: var(--primary-dark);
+    }
+
+    .section-count {
+      font-size: 0.82rem;
+      background: var(--primary-light);
+      color: var(--primary);
+      padding: 3px 10px;
+      border-radius: 999px;
+      font-weight: 700;
+    }
+
+    .section-desc {
+      font-size: 0.9rem;
+      color: var(--muted);
+      background: #f8fafc;
+      padding: 10px 14px;
+      border-left: 4px solid var(--accent);
+      border-radius: 6px;
+      margin-bottom: 18px;
+    }
+
+    /* Question Item */
+    .q-item {
+      padding: 16px 14px;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      margin-bottom: 12px;
+      transition: border-color 0.2s, background 0.2s;
+    }
+
+    .q-item.answered {
+      border-color: #c7d2fe;
+      background: #fafbff;
+    }
+
+    .q-item.unanswered-alert {
+      border-color: var(--danger);
+      background: #fef2f2;
+      animation: shake 0.4s ease;
+    }
+
+    @keyframes shake {
+      0%, 100% { transform: translateX(0); }
+      25% { transform: translateX(-6px); }
+      75% { transform: translateX(6px); }
+    }
+
+    .q-text {
+      font-size: 0.98rem;
+      font-weight: 600;
+      margin-bottom: 12px;
+    }
+
+    .q-num {
+      color: var(--primary);
+      margin-right: 6px;
+      font-weight: 800;
+    }
+
+    .rating-row {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 8px;
+    }
+
+    .rating-btn {
+      position: relative;
+      cursor: pointer;
+    }
+
+    .rating-btn input {
+      position: absolute;
+      opacity: 0;
+      width: 0;
+      height: 0;
+    }
+
+    .rating-label {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 9px 4px;
+      border: 1.5px solid var(--border);
+      border-radius: 10px;
+      background: #fff;
+      transition: all 0.15s;
+      user-select: none;
+    }
+
+    .rating-label .num {
+      font-size: 1.05rem;
+      font-weight: 800;
+      color: var(--text);
+    }
+
+    .rating-label .txt {
+      font-size: 0.7rem;
+      color: var(--muted);
+      margin-top: 2px;
+    }
+
+    .rating-btn input:checked + .rating-label {
+      background: var(--primary);
+      border-color: var(--primary);
+      box-shadow: 0 4px 10px rgba(79, 70, 229, 0.25);
+      transform: translateY(-1px);
+    }
+
+    .rating-btn input:checked + .rating-label .num,
+    .rating-btn input:checked + .rating-label .txt {
+      color: #fff;
+    }
+
+    /* Footer Navigation */
+    .step-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 18px;
+      gap: 10px;
+    }
+
+    .submit-wrap {
+      text-align: center;
+      margin-top: 24px;
+    }
+
+    .btn-submit {
+      padding: 14px 36px;
+      font-size: 1.05rem;
+      border-radius: 12px;
+      box-shadow: 0 6px 18px rgba(79, 70, 229, 0.3);
+    }
+
+    /* Result Section */
+    #resultSection { display: none; }
+
+    .score-hero {
+      text-align: center;
+      padding: 26px 20px;
+      background: linear-gradient(135deg, #eef2ff 0%, #e0f2fe 100%);
+      border-radius: var(--radius);
+      margin-bottom: 20px;
+      border: 1px solid #c7d2fe;
+    }
+
+    .score-big {
+      font-size: 3rem;
+      font-weight: 900;
+      color: var(--primary);
+      line-height: 1.1;
+      margin: 6px 0;
+    }
+
+    .score-tier {
+      display: inline-block;
+      padding: 4px 14px;
+      border-radius: 999px;
+      font-weight: 700;
+      font-size: 0.9rem;
+      background: var(--primary);
+      color: #fff;
+      margin-top: 6px;
+    }
+
+    .chart-box {
+      max-width: 520px;
+      margin: 0 auto 10px;
+      position: relative;
+    }
+
+    .highlights-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 14px;
+      margin-bottom: 20px;
+    }
+
+    .highlight-box {
+      padding: 16px;
+      border-radius: 12px;
+      border: 1px solid var(--border);
+    }
+
+    .highlight-box.strength {
+      background: #ecfdf5;
+      border-color: #a7f3d0;
+    }
+
+    .highlight-box.growth {
+      background: #fffbeb;
+      border-color: #fde68a;
+    }
+
+    .highlight-box h3 {
+      font-size: 1rem;
+      margin-bottom: 8px;
+    }
+
+    .highlight-item {
+      display: flex;
+      justify-content: space-between;
+      padding: 6px 0;
+      border-bottom: 1px dashed rgba(0,0,0,0.08);
+      font-size: 0.92rem;
+      font-weight: 600;
+    }
+    .highlight-item:last-child { border-bottom: none; }
+
+    .detail-row {
+      padding: 14px 0;
+      border-bottom: 1px solid var(--border);
+    }
+    .detail-row:last-child { border-bottom: none; }
+
+    .detail-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 6px;
+      font-weight: 700;
+    }
+
+    .bar-bg {
+      height: 10px;
+      background: #e2e8f0;
+      border-radius: 999px;
+      overflow: hidden;
+      margin-bottom: 8px;
+    }
+
+    .bar-fill {
+      height: 100%;
+      border-radius: 999px;
+      transition: width 0.5s ease;
+    }
+
+    .advice-text {
+      font-size: 0.88rem;
+      color: var(--muted);
+    }
+
+    .toast {
+      position: fixed;
+      bottom: 24px;
+      left: 50%;
+      transform: translateX(-50%) translateY(20px);
+      background: #0f172a;
+      color: #fff;
+      padding: 10px 20px;
+      border-radius: 999px;
+      font-size: 0.9rem;
+      font-weight: 600;
+      opacity: 0;
+      pointer-events: none;
+      transition: all 0.3s;
+      z-index: 999;
+    }
+    .toast.show {
+      opacity: 1;
+      transform: translateX(-50%) translateY(0);
+    }
+
+    @media (max-width: 520px) {
+      .rating-label .txt { font-size: 0.62rem; }
+      .scale-legend { font-size: 0.7rem; }
+    }
+
+    @media print {
+      .sticky-bar, .no-print, #quizSection { display: none !important; }
+      #resultSection { display: block !important; }
+      body { background: #fff; padding: 0; }
+      .card, .section-card { box-shadow: none; border: 1px solid #cbd5e1; break-inside: avoid; }
+    }
+  </style>
+</head>
+<body>
+
+  <header class="hero">
+    <div class="container">
+      <div class="hero-badge">教育部 UCAN 職場共通職能標準</div>
+      <h1>職場共通職能診斷測評（54題）</h1>
+      <p>透過 8 大核心職場能力自我盤點，快速看見你的職涯優勢與優先升級方向！</p>
+    </div>
+  </header>
+
+  <div class="sticky-bar no-print" id="stickyBar">
+    <div class="container">
+      <div class="progress-header">
+        <span id="progressText">作答進度：0 / 54 題 (0%)</span>
+        <span id="modeBadge" style="color: var(--primary);">分區作答模式</span>
+      </div>
+      <div class="progress-track">
+        <div class="progress-fill" id="progressFill"></div>
+      </div>
+      <div class="nav-pills" id="navPills"></div>
+    </div>
+  </div>
+
+  <main class="container">
+    <!-- Quiz Section -->
+    <div id="quizSection">
+      <div class="card no-print">
+        <div class="toolbar">
+          <div class="name-input-wrap">
+            <label for="userName">你的暱稱：</label>
+            <input type="text" id="userName" placeholder="選填，會顯示在診斷報告上" />
+          </div>
+          <div class="btn-group">
+            <button class="btn" id="toggleModeBtn" onclick="toggleMode()">切換：全部展開</button>
+            <button class="btn" onclick="randomFill()">🎲 隨機試填</button>
+            <button class="btn btn-danger-outline" onclick="resetAll()">重新填寫</button>
+          </div>
+        </div>
+        <div class="scale-legend">
+          <span><b>1 分</b>非常不符合</span>
+          <span><b>2 分</b>不太符合</span>
+          <span><b>3 分</b>普通／尚可</span>
+          <span><b>4 分</b>符合</span>
+          <span><b>5 分</b>非常符合</span>
+        </div>
+      </div>
+
+      <div id="questionsContainer"></div>
+
+      <div class="submit-wrap no-print">
+        <button class="btn btn-primary btn-submit" onclick="calculateResults()">✨ 完成測評並產生診斷報告</button>
+      </div>
+    </div>
+
+    <!-- Result Section -->
+    <div id="resultSection">
+      <div class="score-hero">
+        <div id="resultUserTitle" style="font-weight:700; color:var(--primary-dark);">個人職場共通職能診斷報告</div>
+        <div class="score-big" id="overallScore">0.00</div>
+        <div style="font-size:0.9rem; color:var(--muted);">整體共通職能平均分數（滿分 5.00 分）</div>
+        <div class="score-tier" id="overallTier">評級計算中</div>
+      </div>
+
+      <div class="card">
+        <h2 style="font-size:1.15rem; margin-bottom:14px; text-align:center;">📊 八大職場共通職能雷達圖</h2>
+        <div class="chart-box">
+          <canvas id="radarChart"></canvas>
+          <div id="svgFallback" style="display:none; text-align:center;"></div>
+        </div>
+      </div>
+
+      <div class="highlights-grid">
+        <div class="highlight-box strength">
+          <h3>🌟 你的優勢強項（前 2 名）</h3>
+          <div id="strengthList"></div>
+        </div>
+        <div class="highlight-box growth">
+          <h3>🚀 建議優先加強（後 2 名）</h3>
+          <div id="growthList"></div>
+        </div>
+      </div>
+
+      <div class="card">
+        <h2 style="font-size:1.15rem; margin-bottom:10px;">📋 各項職能分數與養成建議</h2>
+        <div id="detailList"></div>
+      </div>
+
+      <div class="card no-print" style="text-align:center;">
+        <div class="btn-group" style="justify-content:center;">
+          <button class="btn btn-primary" onclick="copySummary()">📋 複製文字結果摘要（適合貼到 LINE）</button>
+          <button class="btn btn-success" onclick="window.print()">🖨️ 列印 / 存成 PDF 報告</button>
+          <button class="btn" onclick="backToQuiz()">⬅️ 返回修改答案</button>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <div class="toast" id="toast"></div>
+
+  <script>
+    const CATEGORIES = [
+      {
+        id: "comm",
+        name: "溝通表達",
+        desc: "透過口頭、書面等方式，表達自己的想法使他人瞭解，並努力理解他人所傳達的資訊。",
+        adviceLow: "建議從練習「先聽懂再回應」開始，參與社團討論、上台簡報或寫作心得，逐步建立清晰表達的自信。",
+        adviceMid: "已具備基本溝通能力，可進一步練習針對不同對象（主管、同儕、客戶）調整表達策略與簡報結構。",
+        adviceHigh: "溝通表達是你的亮點！適合擔任團隊窗口、主持會議或跨部門協調角色，進一步發揮影響力。",
+        questions: [
+          "工作上與人談話時，能先確認彼此的主題與目的。",
+          "與人談話時，能專注傾聽觀察對方傳達的訊息，即使他人和自己意見不相同，仍然樂於傾聽接納。",
+          "會依據不同對象，運用適當方法技巧，清楚表達訊息及進行對話。",
+          "能夠正確解讀工作相關文件，如文字或圖表資料、技術文件、測試報告等。",
+          "能夠使用正確的文法、格式或邏輯製作符合組織或工作所要求之書面資料。",
+          "能對不同對象，以書面方式適切地陳述欲表達之訊息。",
+          "運用組織或工作所要求之外語能力進行資訊溝通傳達。"
+        ]
+      },
+      {
+        id: "learn",
+        name: "持續學習",
+        desc: "了解能力發展的重要性，並能探索、規劃和有效管理自身的能力，並保持繼續成長的企圖心。",
+        adviceLow: "建議每週安排固定 1～2 小時探索有興趣的產業趨勢或線上課程，為自己設定小而具體的學習目標。",
+        adviceMid: "已有學習意識，可進一步把學習和職涯目標連結，建立個人筆記系統並定期檢視成長進度。",
+        adviceHigh: "你擁有極佳的成長型思維！建議嘗試跨領域學習或考取關鍵專業證照，成為團隊中的知識領航者。",
+        questions: [
+          "能夠持續表現出對學習新事物及知識技能的好奇心。",
+          "能明確掌握個人職涯發展所需知識、技能和必要條件。",
+          "能夠對自己能力的成長訂定具體目標。",
+          "了解並進行職涯發展上所需的持續學習和訓練。",
+          "能夠持續因應產業趨勢進行專業能力發展。",
+          "能從與他人的互動中，汲取正面有益的經驗。",
+          "持續應用各種方法及管道提升自己的能力。"
+        ]
+      },
+      {
+        id: "inter",
+        name: "人際互動",
+        desc: "依不同情境，運用適當方法及個人風格，與他人互動或共事。",
+        adviceLow: "建議多參與校內外活動、讀書會或志工服務，從主動打招呼與傾聽他人需求開始累積人際互動經驗。",
+        adviceMid: "互動表現穩健，可更有意識地經營跨領域人脈，並在合作中主動提供協助以建立互惠關係。",
+        adviceHigh: "你非常擅長建立信任與連結！適合拓展外部資源、人脈經營或需要高度同理心的職務。",
+        questions: [
+          "能以同理心主動瞭解他人的需求與感受，藉以建立良好的人際關係。",
+          "能夠分析自己的領域，主動找出需要建立或改善的重要關係。",
+          "會尋找或製造機會去接觸他人，並與其建立人脈關係。",
+          "工作時對於能提供資訊或協助的人會主動表達善意。",
+          "工作上能提供他人協助及支持，以建立彼此未來的互惠合作關係。",
+          "會運用適當方法有系統地管理人脈資源。"
+        ]
+      },
+      {
+        id: "team",
+        name: "團隊合作",
+        desc: "能積極參與團隊任務，並與團隊成員有良好互動，以共同完成目標。",
+        adviceLow: "建議多參與分組專題或團隊競賽，練習在團隊中主動分享想法、尊重分工並共同承擔成果。",
+        adviceMid: "能順利融入團隊運作，可進一步練習在意見分歧時提出建設性回饋，協助團隊凝聚共識。",
+        adviceHigh: "你是極佳的團隊戰友！可嘗試擔任專案負責人或組長，發揮協調與凝聚團隊士氣的潛力。",
+        questions: [
+          "能夠以團隊目標為優先，支持團隊的決定。",
+          "積極參與團隊並真誠地表達個人的看法。",
+          "對於團隊成員提出的意見能夠給予建設性的回應。",
+          "真誠地重視團隊成員的意見和專業知識，願意向其學習。",
+          "會以正面的話語來談論團隊成員，不會背地批評。",
+          "能將個人喜好排除，在必要時調整自己的角色或行為。",
+          "能夠與團隊成員共同解決問題並承擔責任。"
+        ]
+      },
+      {
+        id: "prob",
+        name: "問題解決",
+        desc: "遇到狀況時能釐清問題，透過系統化的資訊蒐集與分析，提出解決方案。",
+        adviceLow: "遇到難題時可練習先寫下「事實與原因」，再列出至少 2 種可行方案並比較利弊，培養結構化思考。",
+        adviceMid: "具備不錯的分析力，可進一步學習問題分析工具（如魚骨圖、5 Why 分析）提升預判風險的能力。",
+        adviceHigh: "你的邏輯與解題能力出色！適合承擔複雜專案、流程優化或需要獨立判斷的關鍵任務。",
+        questions: [
+          "系統化的收集與所發生狀況相關的資訊。",
+          "能夠根據事實證據、謹慎評估並合理判斷可能的問題所在。",
+          "能夠以系統化的方式釐清問題。",
+          "透過各種管道蒐集相關資料及意見，提供解決問題的各種可能方案。",
+          "能夠評估各種解決方案的利弊，找出最佳問題解決方案。",
+          "為可能發生的問題預作準備，找出解決問題可能需要的資訊。"
+        ]
+      },
+      {
+        id: "inno",
+        name: "創新",
+        desc: "在有限的資源下，不侷限既有的工作模式，能夠主動提出新的建議或想法，並落實於工作中。",
+        adviceLow: "建議從日常小事開始練習「有沒有更省時或更好的做法？」，多涉獵不同領域案例激發靈感。",
+        adviceMid: "具備創新潛力，可多參加黑客松、企劃或設計競賽，練習把好點子轉化為具體可行的方案。",
+        adviceHigh: "你擁有敏銳的創新思維與彈性！適合投入新產品規劃、企劃發想或推動數位轉型與流程革新。",
+        questions: [
+          "能評估原來的作法，並提出有效改善、簡化服務、制度和流程的方法。",
+          "不會侷限於原有的作法，能夠嘗試用新的方式達成目標或解決問題。",
+          "能夠蒐集、分析及組織各方意見與想法，並提出嶄新的觀點或見解。",
+          "能提出新穎且具體可行的產品或服務構想。",
+          "能夠想像及預測可能的新趨勢及發展。",
+          "能夠在任務進行中保持彈性。"
+        ]
+      },
+      {
+        id: "resp",
+        name: "工作責任及紀律",
+        desc: "瞭解並執行個人在組織中的責任，遵守組織及專業上對倫理、制度及誠信的要求。",
+        adviceLow: "建議透過工讀、實習或社團幹部經驗，練習時間管理、準時交付任務並找到適合自己的紓壓方式。",
+        adviceMid: "工作態度穩定可靠，可進一步強化壓力調適與細節把關，讓產出品質更上一層樓。",
+        adviceHigh: "你的責任感與職業操守令人放心！這是職場上最受主管信賴的核心基石，請持續保持。",
+        questions: [
+          "能夠認同組織的目標或價值，並積極為組織的利益努力。",
+          "能了解並積極完成自己應負責的工作任務及確保產出品質。",
+          "了解並確實遵循組織的紀律、制度與工作規範。",
+          "能注意確保個人的工作安全與身心健康。",
+          "找出自我排解壓力的適當方式，並勇於承擔需要面對的壓力。",
+          "了解並遵循組織倫理及各部門及人員合理的互動關係與方式。",
+          "以誠信為行事原則，瞭解違反組織及專業上的道德法律標準之後果，並落實責任與紀律於日常工作表現。"
+        ]
+      },
+      {
+        id: "ict",
+        name: "資訊科技應用",
+        desc: "運用各行業所需的資訊技術工具，有效存取、管理、整合並傳遞訊息。",
+        adviceLow: "建議先熟練文書、試算表與雲端協作工具，並建立基本資安與版權觀念，大幅提升學習與工作效率。",
+        adviceMid: "數位應用能力良好，可進一步探索 AI 輔助工具、資料視覺化或自動化流程，強化職場競爭力。",
+        adviceHigh: "你是數位工具高手！善用這項優勢結合專業領域知識，能讓你在各行各業都展現高效率產出。",
+        questions: [
+          "能夠依據不同的情況，判斷並選擇使用／運用資訊科技工具，有效率地完成工作任務。",
+          "透過網路瀏覽和檢索資訊，經過篩選與衡量後，進一步管理、儲存及分析資料。",
+          "能有效運用資訊科技工具，產出數位內容（如文字、照片、影像），以符合組織或工作任務之要求。",
+          "能依據不同的狀況與情境，使用適當的資訊科技工具與他人進行溝通及互動。",
+          "瞭解使用資訊／數位內容版權與授權的規範。",
+          "瞭解數位環境中存在的風險及威脅，並以適當的措施保護個人資料及使用裝置之安全。",
+          "能夠透過使用資訊科技工具解決自己碰到的問題或找出相應的解決方法。",
+          "能將產業的相關知識與資訊科技工具結合，並應用在工作任務上。"
+        ]
+      }
+    ];
+
+    const SCALE_LABELS = ["非常不符", "不太符合", "普通尚可", "符合", "非常符合"];
+    const TOTAL_Q = 54;
+
+    // Flatten question metadata
+    let globalIdx = 1;
+    CATEGORIES.forEach((cat, cIdx) => {
+      cat.items = cat.questions.map(text => ({
+        qNum: globalIdx++,
+        catIdx: cIdx,
+        text
+      }));
+    });
+
+    const answers = {};
+    let viewMode = "step"; // 'step' or 'all'
+    let currentStep = 0;
+    let radarInstance = null;
+    let lastSummaryText = "";
+
+    function renderNavPills() {
+      const container = document.getElementById("navPills");
+      container.innerHTML = CATEGORIES.map((cat, idx) => {
+        const answeredCount = cat.items.filter(it => answers[it.qNum]).length;
+        const isDone = answeredCount === cat.items.length;
+        const isActive = viewMode === "step" && currentStep === idx;
+        return `<button class="nav-pill ${isActive ? 'active' : ''} ${isDone ? 'done' : ''}" onclick="jumpToCategory(${idx})">
+          ${idx + 1}. ${cat.name} ${isDone ? '✓' : `(${answeredCount}/${cat.items.length})`}
+        </button>`;
+      }).join("");
+    }
+
+    function renderQuestions() {
+      const container = document.getElementById("questionsContainer");
+      const catsToRender = viewMode === "step" ? [CATEGORIES[currentStep]] : CATEGORIES;
+
+      container.innerHTML = catsToRender.map((cat) => {
+        const cIdx = CATEGORIES.indexOf(cat);
+        const answeredCount = cat.items.filter(it => answers[it.qNum]).length;
+
+        const qHtml = cat.items.map(it => {
+          const val = answers[it.qNum];
+          const radios = [1, 2, 3, 4, 5].map(score => `
+            <label class="rating-btn">
+              <input type="radio" name="q_${it.qNum}" value="${score}" ${val === score ? 'checked' : ''} onchange="setAnswer(${it.qNum}, ${score})" />
+              <span class="rating-label">
+                <span class="num">${score}</span>
+                <span class="txt">${SCALE_LABELS[score - 1]}</span>
+              </span>
+            </label>
+          `).join("");
+
+          return `
+            <div class="q-item ${val ? 'answered' : ''}" id="q_card_${it.qNum}">
+              <div class="q-text"><span class="q-num">Q${it.qNum}.</span>${it.text}</div>
+              <div class="rating-row">${radios}</div>
+            </div>
+          `;
+        }).join("");
+
+        const stepNav = viewMode === "step" ? `
+          <div class="step-footer no-print">
+            <button class="btn" onclick="prevStep()" ${cIdx === 0 ? 'disabled style="opacity:0.4;cursor:not-allowed;"' : ''}>⬅️ 上一區</button>
+            <span style="font-size:0.85rem;color:var(--muted);">第 ${cIdx + 1} / ${CATEGORIES.length} 區</span>
+            ${cIdx < CATEGORIES.length - 1
+              ? `<button class="btn btn-primary" onclick="nextStep()">下一區 ➡️</button>`
+              : `<button class="btn btn-success" onclick="calculateResults()">完成並看結果 ✨</button>`
+            }
+          </div>
+        ` : "";
+
+        return `
+          <section class="section-card" id="sec_${cIdx}">
+            <div class="section-title-row">
+              <h2 class="section-title">${cIdx + 1}. ${cat.name}</h2>
+              <span class="section-count">已完成 ${answeredCount} / ${cat.items.length} 題</span>
+            </div>
+            <div class="section-desc">${cat.desc}</div>
+            ${qHtml}
+            ${stepNav}
+          </section>
+        `;
+      }).join("");
+
+      updateProgress();
+      renderNavPills();
+    }
+
+    function setAnswer(qNum, score) {
+      answers[qNum] = score;
+      const card = document.getElementById(`q_card_${qNum}`);
+      if (card) {
+        card.classList.add("answered");
+        card.classList.remove("unanswered-alert");
+      }
+      updateProgress();
+      renderNavPills();
+      // Update section badge count
+      const cat = CATEGORIES.find(c => c.items.some(i => i.qNum === qNum));
+      if (cat) {
+        const cIdx = CATEGORIES.indexOf(cat);
+        const sec = document.getElementById(`sec_${cIdx}`);
+        if (sec) {
+          const done = cat.items.filter(i => answers[i.qNum]).length;
+          const badge = sec.querySelector(".section-count");
+          if (badge) badge.textContent = `已完成 ${done} / ${cat.items.length} 題`;
+        }
+      }
+    }
+
+    function updateProgress() {
+      const done = Object.keys(answers).length;
+      const pct = Math.round((done / TOTAL_Q) * 100);
+      document.getElementById("progressText").textContent = `作答進度：${done} / ${TOTAL_Q} 題 (${pct}%)`;
+      document.getElementById("progressFill").style.width = `${pct}%`;
+    }
+
+    function jumpToCategory(idx) {
+      if (viewMode === "step") {
+        currentStep = idx;
+        renderQuestions();
+        window.scrollTo({ top: 180, behavior: "smooth" });
+      } else {
+        const el = document.getElementById(`sec_${idx}`);
+        if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });
+      }
+    }
+
+    function prevStep() {
+      if (currentStep > 0) {
+        currentStep--;
+        renderQuestions();
+        window.scrollTo({ top: 180, behavior: "smooth" });
+      }
+    }
+
+    function nextStep() {
+      if (currentStep < CATEGORIES.length - 1) {
+        currentStep++;
+        renderQuestions();
+        window.scrollTo({ top: 180, behavior: "smooth" });
+      }
+    }
+
+    function toggleMode() {
+      viewMode = viewMode === "step" ? "all" : "step";
+      document.getElementById("toggleModeBtn").textContent = viewMode === "step" ? "切換：全部展開" : "切換：分區作答";
+      document.getElementById("modeBadge").textContent = viewMode === "step" ? "分區作答模式" : "全部展開模式";
+      renderQuestions();
+    }
+
+    function randomFill() {
+      for (let i = 1; i <= TOTAL_Q; i++) {
+        // Weighted slightly toward realistic 2-5 scores
+        answers[i] = Math.floor(Math.random() * 4) + 2;
+      }
+      renderQuestions();
+      showToast("已隨機試填全部 54 題！可直接點擊下方按鈕看報告");
+    }
+
+    function resetAll() {
+      if (Object.keys(answers).length > 0 && !confirm("確定要清空所有已填寫的答案嗎？")) return;
+      for (let key in answers) delete answers[key];
+      currentStep = 0;
+      renderQuestions();
+      showToast("已重設所有題目");
+    }
+
+    function getTierInfo(score) {
+      if (score >= 4.0) return { label: "優勢強項（4.0～5.0）", color: "#10b981", desc: "該項能力為個人優勢強項，可進一步發揮應用。" };
+      if (score >= 3.0) return { label: "表現良好（3.0～3.99）", color: "#0ea5e9", desc: "該項能力表現良好，能順利因應多數工作情境。" };
+      if (score >= 2.0) return { label: "具備基礎（2.0～2.99）", color: "#f59e0b", desc: "該項能力已有基礎，但仍有提升空間。" };
+      return { label: "亟需加強（1.0～1.99）", color: "#ef4444", desc: "該項能力需要特別加強，才能勝任職場工作。" };
+    }
+
+    function calculateResults() {
+      // Find first unanswered question
+      for (let cIdx = 0; cIdx < CATEGORIES.length; cIdx++) {
+        for (let item of CATEGORIES[cIdx].items) {
+          if (!answers[item.qNum]) {
+            if (viewMode === "step" && currentStep !== cIdx) {
+              currentStep = cIdx;
+              renderQuestions();
+            }
+            setTimeout(() => {
+              const card = document.getElementById(`q_card_${item.qNum}`);
+              if (card) {
+                card.scrollIntoView({ behavior: "smooth", block: "center" });
+                card.classList.remove("unanswered-alert");
+                void card.offsetWidth;
+                card.classList.add("unanswered-alert");
+              }
+            }, 60);
+            showToast(`還有題目尚未作答（請先完成第 ${item.qNum} 題）`);
+            return;
+          }
+        }
+      }
+
+      // Compute scores
+      const results = CATEGORIES.map(cat => {
+        const sum = cat.items.reduce((acc, it) => acc + answers[it.qNum], 0);
+        const avg = sum / cat.items.length;
+        return {
+          ...cat,
+          avg: Number(avg.toFixed(2)),
+          tier: getTierInfo(avg)
+        };
+      });
+
+      const totalSum = Object.values(answers).reduce((a, b) => a + b, 0);
+      const overallAvg = Number((totalSum / TOTAL_Q).toFixed(2));
+      const overallTier = getTierInfo(overallAvg);
+
+      const userName = document.getElementById("userName").value.trim();
+      document.getElementById("resultUserTitle").textContent = userName
+        ? `${userName} 的 UCAN 職場共通職能診斷報告`
+        : "個人 UCAN 職場共通職能診斷報告";
+
+      document.getElementById("overallScore").textContent = overallAvg.toFixed(2);
+      const tierEl = document.getElementById("overallTier");
+      tierEl.textContent = overallTier.label;
+      tierEl.style.background = overallTier.color;
+
+      // Sort for top 2 & bottom 2
+      const sorted = [...results].sort((a, b) => b.avg - a.avg);
+      const top2 = sorted.slice(0, 2);
+      const bottom2 = sorted.slice(-2).reverse();
+
+      document.getElementById("strengthList").innerHTML = top2.map((r, i) => `
+        <div class="highlight-item">
+          <span>${i + 1}. ${r.name}</span>
+          <span style="color:#047857;">${r.avg.toFixed(2)} 分</span>
+        </div>
+      `).join("");
+
+      document.getElementById("growthList").innerHTML = bottom2.map((r, i) => `
+        <div class="highlight-item">
+          <span>${i + 1}. ${r.name}</span>
+          <span style="color:#b45309;">${r.avg.toFixed(2)} 分</span>
+        </div>
+      `).join("");
+
+      // Detailed breakdown
+      document.getElementById("detailList").innerHTML = results.map(r => {
+        const pct = (r.avg / 5) * 100;
+        const advice = r.avg >= 4 ? r.adviceHigh : (r.avg >= 3 ? r.adviceMid : r.adviceLow);
+        return `
+          <div class="detail-row">
+            <div class="detail-top">
+              <span>${r.name}</span>
+              <span style="color:${r.tier.color};">${r.avg.toFixed(2)} 分（${r.tier.label.split('（')[0]}）</span>
+            </div>
+            <div class="bar-bg">
+              <div class="bar-fill" style="width:${pct}%; background:${r.tier.color};"></div>
+            </div>
+            <div class="advice-text">💡 <b>建議：</b>${advice}</div>
+          </div>
+        `;
+      }).join("");
+
+      // Prepare summary text for copy
+      const today = new Date().toLocaleDateString("zh-TW");
+      lastSummaryText = [
+        `【${userName ? userName + ' 的 ' : ''}UCAN 職場共通職能測評結果】(${today})`,
+        `⭐ 整體總平均：${overallAvg.toFixed(2)} / 5.00 分（${overallTier.label.split('（')[0]}）`,
+        ``,
+        `🌟 優勢強項：${top2.map(r => `${r.name}(${r.avg.toFixed(2)})`).join("、")}`,
+        `🚀 優先加強：${bottom2.map(r => `${r.name}(${r.avg.toFixed(2)})`).join("、")}`,
+        ``,
+        `📊 八大職能分數明細：`,
+        ...results.map(r => `• ${r.name}：${r.avg.toFixed(2)} 分`),
+        ``,
+        `資料標準：教育部 UCAN 大專校院就業職能平台（54題）`
+      ].join("\n");
+
+      // Show results
+      document.getElementById("quizSection").style.display = "none";
+      document.getElementById("stickyBar").style.display = "none";
+      document.getElementById("resultSection").style.display = "block";
+      window.scrollTo({ top: 0, behavior: "smooth" });
+
+      renderRadarChart(results);
+    }
+
+    function renderRadarChart(results) {
+      const canvas = document.getElementById("radarChart");
+      const fallback = document.getElementById("svgFallback");
+
+      if (typeof Chart !== "undefined") {
+        canvas.style.display = "block";
+        fallback.style.display = "none";
+        if (radarInstance) radarInstance.destroy();
+        radarInstance = new Chart(canvas, {
+          type: "radar",
+          data: {
+            labels: results.map(r => r.name),
+            datasets: [{
+              label: "職能平均分數",
+              data: results.map(r => r.avg),
+              backgroundColor: "rgba(79, 70, 229, 0.22)",
+              borderColor: "#4f46e5",
+              pointBackgroundColor: "#4f46e5",
+              pointBorderColor: "#fff",
+              pointHoverBackgroundColor: "#fff",
+              pointHoverBorderColor: "#4f46e5",
+              borderWidth: 2.5,
+              pointRadius: 4
+            }]
+          },
+          options: {
+            responsive: true,
+            scales: {
+              r: {
+                min: 0,
+                max: 5,
+                ticks: { stepSize: 1, backdropColor: "transparent" },
+                pointLabels: { font: { size: 13, weight: "bold" }, color: "#1e293b" },
+                grid: { color: "#e2e8f0" }
+              }
+            },
+            plugins: {
+              legend: { display: false }
+            }
+          }
+        });
+      } else {
+        // Offline SVG Radar fallback
+        canvas.style.display = "none";
+        fallback.style.display = "block";
+        const size = 320, cx = 160, cy = 160, rMax = 110;
+        const n = results.length;
+        const pts = results.map((res, i) => {
+          const angle = (Math.PI * 2 * i) / n - Math.PI / 2;
+          const r = (res.avg / 5) * rMax;
+          return `${(cx + r * Math.cos(angle)).toFixed(1)},${(cy + r * Math.sin(angle)).toFixed(1)}`;
+        }).join(" ");
+        const grids = [1, 2, 3, 4, 5].map(lvl => {
+          const r = (lvl / 5) * rMax;
+          const gPts = results.map((_, i) => {
+            const angle = (Math.PI * 2 * i) / n - Math.PI / 2;
+            return `${(cx + r * Math.cos(angle)).toFixed(1)},${(cy + r * Math.sin(angle)).toFixed(1)}`;
+          }).join(" ");
+          return `<polygon points="${gPts}" fill="none" stroke="#cbd5e1" stroke-width="1"/>`;
+        }).join("");
+        const labels = results.map((res, i) => {
+          const angle = (Math.PI * 2 * i) / n - Math.PI / 2;
+          const x = cx + (rMax + 24) * Math.cos(angle);
+          const y = cy + (rMax + 24) * Math.sin(angle);
+          return `<text x="${x}" y="${y}" font-size="11" font-weight="bold" fill="#1e293b" text-anchor="middle" dominant-baseline="middle">${res.name}</text>`;
+        }).join("");
+        fallback.innerHTML = `<svg viewBox="0 0 ${size} ${size}" style="max-width:340px;width:100%;">${grids}<polygon points="${pts}" fill="rgba(79,70,229,0.25)" stroke="#4f46e5" stroke-width="2.5"/>${labels}</svg>`;
+      }
+    }
+
+    function backToQuiz() {
+      document.getElementById("resultSection").style.display = "none";
+      document.getElementById("quizSection").style.display = "block";
+      document.getElementById("stickyBar").style.display = "block";
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+
+    function copySummary() {
+      if (navigator.clipboard) {
+        navigator.clipboard.writeText(lastSummaryText).then(() => {
+          showToast("已複製測評摘要！可直接貼到 LINE 分享");
+        });
+      } else {
+        const ta = document.createElement("textarea");
+        ta.value = lastSummaryText;
+        document.body.appendChild(ta);
+        ta.select();
+        document.execCommand("copy");
+        document.body.removeChild(ta);
+        showToast("已複製測評摘要！");
+      }
+    }
+
+    function showToast(msg) {
+      const t = document.getElementById("toast");
+      t.textContent = msg;
+      t.classList.add("show");
+      setTimeout(() => t.classList.remove("show"), 2600);
+    }
+
+    // Init
+    renderQuestions();
+  </script>
+</body>
+</html>
